@@ -1,0 +1,73 @@
+NAME
+    DateTimeX::Auto - use DateTime without needing to call constructors
+
+SYNOPSIS
+     use DateTimeX::Auto ':auto';
+ 
+     my $ga_start = '2000-04-06';
+     $ga_start->add(years => 10);
+     printf("%s %s\n", $ga_start, ref $ga_start);  # 2010-04-06 DateTime
+ 
+     {
+       no DateTimeX::Auto;
+       my $string = '2000-04-06';
+       printf( "%s\n", ref($string)?'Ref':'NoRef' );  # NoRef
+     }
+
+DESCRIPTION
+    DateTime is awesome, but constructing "DateTime" objects can be
+    annoying. You often need to use one of the formatter modules, or call
+    "DateTime->new()" with a bunch of values. If you've got a bunch of
+    constant dates in your code, then "DateTimeX::Auto" makes all this a bit
+    simpler.
+
+    It uses overload to overload the "q()" operator, automatically turning
+    all string constants that match particular regular expressions into
+    "DateTime" objects. It also overloads stringification to make sure that
+    "DateTime" objects get stringified back to exactly the format they were
+    given in.
+
+    The date formats supported are:
+
+     yyyy-mm-dd
+     yyyy-mm-ddThh:mm:ss
+
+    Fractional seconds are also supported, to an arbitrary number of decimal
+    places. However, as "DateTime" only supports nanosecond precision, any
+    digits after the ninth will be zeroed out.
+
+     my $dt         ='1234-12-12T12:34:56.123456789123456789';
+     print "$dt\n"; # 1234-12-12T12:34:56.123456789000000000
+
+    Objects are blessed into the "DateTimeX::Auto" class which inherits from
+    "DateTime". They use UNIVERSAL::ref to masquerade as plain "DateTime"
+    objects.
+
+     print ref('2000-01-01')."\n";   # DateTime
+
+  The "d" and "dt" Functions
+    As an alternative "DateTimeX::Auto" can export a function called "d".
+    This might be useful if you'd prefer not to have every string constant
+    in your code turned into a "DateTime".
+
+     use DateTimeX::Auto 'd';
+     my $dt = d('2000-01-01');
+
+    If "d" is called with a string that is in an unrecognised format, it
+    croaks. If called with no arguments, returns a "DateTime" representing
+    the current time.
+
+    An alias "dt" is also available. They're exactly the same.
+
+SEE ALSO
+    DateTime, DateTimeX::Easy.
+
+AUTHOR
+    Toby Inkster <tobyink@cpan.org>.
+
+COPYRIGHT
+    Copyright 2011 Toby Inkster
+
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
