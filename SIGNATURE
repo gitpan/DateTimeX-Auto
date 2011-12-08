@@ -14,33 +14,42 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 2baad34494c912e120e15ba0e1638d2fb32f8bfc Changes
-SHA1 c2abc59ae2e037da9d12376e120d1e6321f1faf5 Changes.ttl
-SHA1 a465748572df92ca71d75eab673761a8b3ed4378 Changes.xml
-SHA1 fe2739679d98c64ee56ae05df539a634bc2ae608 MANIFEST
-SHA1 f5e0e1a1bb5bd5e30043a2123bf757fa648bedf8 MANIFEST.SKIP
-SHA1 ad42eab950eae5cc75440dee4cec2eaa38a5b5ab META.yml
-SHA1 9692c8ec4d83e9cf64874e091ab2541a5db9c771 Makefile.PL
-SHA1 79208833e87fc132478c1d9adacc7b7c368f517a README
-SHA1 20c73697e1713638140c719d8eaa19a275ed43a5 inc/Module/AutoInstall.pm
-SHA1 7305dbe2904416e28decb05396988a5d51d578be inc/Module/Install.pm
-SHA1 ca13d9875e1249f6e84f7070be8152c34837955e inc/Module/Install/AutoInstall.pm
-SHA1 129960509127732258570c122042bc48615222e1 inc/Module/Install/Base.pm
-SHA1 cf3356ed9a5bd2f732527ef9e7bc5ef4458c8a93 inc/Module/Install/Can.pm
-SHA1 986dcb1f1b6a1fde7c51f1558b93368e2429caa2 inc/Module/Install/DOAPChangeSets.pm
-SHA1 bf0a3e1977effc2832d7a813a76dce3f31b437b6 inc/Module/Install/Fetch.pm
-SHA1 b501b0df59a5cd235cca473889f82c3d3429f39e inc/Module/Install/Include.pm
-SHA1 b721c93ca5bc9a6aa863b49af15f1b1de6125935 inc/Module/Install/Makefile.pm
-SHA1 026cc0551a0ad399d195e395b46bdf842e115192 inc/Module/Install/Metadata.pm
-SHA1 a615bb050ca0b2d79bfa0224addcb83019a53b09 inc/Module/Install/ReadmeFromPod.pm
-SHA1 5457015ea5a50e93465bf2dafa29feebd547f85b inc/Module/Install/Win32.pm
-SHA1 051e7fa8063908befa3440508d0584a2497b97db inc/Module/Install/WriteAll.pm
-SHA1 39d7c8fd1e57f1dc229c163fdc7593d4b276c43d lib/DateTimeX/Auto.pm
-SHA1 a35569ec62e441cd6237e15c11ed07cca8085555 t/01basic.t
+SHA1 b3b2cf9f919d82b37932919018ec541a43c99c8a Changes
+SHA1 f3296a09eb07898f3ba6dd0ece615dafc1b57e16 LICENSE
+SHA1 1a69daa3ce4e8ff2fb5bd8adb71610e06f58ab19 MANIFEST
+SHA1 d93032a2eac91cace19fa02a0a1ac5a7bfe66cab META.yml
+SHA1 c8bbc7c0230334690da1fb48d6d13df4c1631a80 Makefile.PL
+SHA1 de69b0861726aa793bc6a930b3324157233cb45f README
+SHA1 7bf2e8960978bfbd3a8196e23a170191a46b5cdd examples/example.pl
+SHA1 5d94bc10deff1dd74e4bc5dfa6fc015e39271f15 inc/Module/AutoInstall.pm
+SHA1 40106479d4e07f379cb82ca1d69fca92e3a40f47 inc/Module/Install.pm
+SHA1 34a24a530ecf0365cc02e4150b06c9bed702a441 inc/Module/Install/AutoInstall.pm
+SHA1 c04f94f91fa97b9f8cfb5a36071098ab0e6c78e3 inc/Module/Install/AutoManifest.pm
+SHA1 ae8aa01a73cb83da31c39e8eed1120c59cb530a1 inc/Module/Install/Base.pm
+SHA1 5c87d2d0e2c08b5173259006c88ad81c24303f9d inc/Module/Install/Can.pm
+SHA1 98daf9d8c50b4b7e8988cf1fa2b86044ad219533 inc/Module/Install/Fetch.pm
+SHA1 f3e008113f7f49b0625083b6cc358a312854f613 inc/Module/Install/Include.pm
+SHA1 e67589fcbacdda6c98ff34d8e26a004ab0467bdc inc/Module/Install/Makefile.pm
+SHA1 209ea405d4ab94475661bb450d0ea042d2ec25b5 inc/Module/Install/Metadata.pm
+SHA1 3b9281ddf7dd6d6f5de0a9642c69333023193c80 inc/Module/Install/Package.pm
+SHA1 b86d0385e10881db680d28bde94f275e49e34a27 inc/Module/Install/TrustMetaYml.pm
+SHA1 1326052d1df1065debee74f9d8583a734b9b3d00 inc/Module/Install/Win32.pm
+SHA1 bb607f3715c40fc3bc1c46496587cdb215bc4fa2 inc/Module/Install/WriteAll.pm
+SHA1 26d58a041cd6b3d21db98b32e8fd1841aae21204 inc/Module/Package.pm
+SHA1 6b807287940754cc31a3db59f2b22e363d5525be inc/Module/Package/Dist/RDF.pm
+SHA1 775bd24f2fdbb6dce51a8b5b0cdb01fccfce83c4 inc/Scalar/Util.pm
+SHA1 b1b664983568bf822c327599eb88e223483ae96a inc/Scalar/Util/PP.pm
+SHA1 eef6bff62046bff2ce08ba132d0b58fba30f40b4 inc/YAML/Tiny.pm
+SHA1 66787db1bed7f78d63fa6c127007d3a030976891 lib/DateTimeX/Auto.pm
+SHA1 d90622a2eb7272db78bed4c7a30b46d4966d6147 meta/changes.ttl
+SHA1 07e0a9a3bf328c47282b72357eccf2e5a512a721 meta/doap.ttl
+SHA1 af9f66eeaaa078ad074e5ae600f388d982db8afd meta/makefile.ttl
+SHA1 31e50f379d77030facbbe9c922dac144e7281def t/01basic.t
+SHA1 66c4ff3a12a606d57d00f3c3500b9ea86b7a5df1 t/02cloning.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 
-iEYEARECAAYFAk4hU6sACgkQzr+BKGoqfTnt1QCdGHaKFfsG9u2o7hyvDFUZfmu5
-QYwAoJoLWwj81STQfoErDlcrNOsaOuz7
-=0xfe
+iEYEARECAAYFAk7g3aYACgkQzr+BKGoqfTl6XwCgly1HRJPSOBBdm2VtsiphFvps
+6rgAn1tv/ACibVoGpEjMl6QPQa4nauZ5
+=+MUv
 -----END PGP SIGNATURE-----

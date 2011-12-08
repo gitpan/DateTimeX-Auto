@@ -4,17 +4,22 @@ use 5.008;
 use strict;
 use base qw[DateTime Exporter];
 use overload '""' => \&_dtxa_stringify;
+use Object::AUTHORITY;
 use UNIVERSAL::ref;
 
 use Carp qw[];
 use DateTime::Format::Strptime qw[];
 
 our %_const_handlers = (
-	q  => sub {return __PACKAGE__->new($_[0]) || $_[1]}
+	q  => sub
+	{
+		return $_[1] unless $_[2] eq 'q';
+		return (__PACKAGE__->new($_[0]) // $_[1]);
+	},
 );
 our @EXPORT_OK = qw[d dt];
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 sub import
 {
@@ -44,12 +49,11 @@ sub ref
 
 sub d
 {
-	my ($string) = @_;	
-	my $package = __PACKAGE__;
+	my ($string) = @_;
 	
 	return DateTime->now unless @_;
 	
-	my $dt = $package->new("$string");
+	my $dt = __PACKAGE__->new("$string");
 	return $dt if $dt;
 	
 	Carp::croak("Could not turn '$string' into a DateTime.");
@@ -57,62 +61,104 @@ sub d
 
 *dt = \&d;
 
+sub from_object
+{
+	my ($proto, %args) = @_;
+	
+	my %x;
+	my $rv = $proto->SUPER::from_object(%args);
+	$rv->{+__PACKAGE__} = { %x } if %x = %{ $args{object}->{+__PACKAGE__} };
+	
+	return $rv;
+}
+
 sub new
 {
+	if (scalar @_ > 2)
+	{
+		my $class = shift;
+		return $class->SUPER::new(@_);
+	}
+	
 	my ($class, $string) = @_;
-
-	if ($string =~ /^(\d{4})-(0[1-9]|1[0-2])-([0-3][0-9])$/)
+	
+	if ($string =~ /^(\d{4})-(0[1-9]|1[0-2])-([0-2][0-9]|30|31)(Z?)$/)
 	{
 		my $dt;
+		my $z = $4 // '';
 		eval {
 			$dt = $class->SUPER::new( year => $1, month=>$2, day=>$3, hour=>0, minute=>0, second=>0 );
-			$dt->{$class}{format} = 'D';
-		};
-		return $dt if $dt;
-	}
-
-	if ($string =~ /^(\d{4})-(0[1-9]|1[0-2])-([0-3][0-9])T([0-1][0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9]|60)(\.[0-9]+)?$/)
-	{
-		my $dt;
-		my $nano = $7;
-		eval {
-			$dt = $class->SUPER::new( year => $1, month=>$2, day=>$3, hour=>$4, minute=>$5, second=>$6 );
-			$dt->{$class}{format} = 'DT';
-			if (length $nano and defined $dt)
+			$dt->{+__PACKAGE__}{format} = 'D';
+			if ($z eq 'Z' and defined $dt)
 			{
-				$dt->{$class}{format} = length($nano) - 1;
-				$dt->{rd_nanosecs} = substr($nano.('0' x 9), 1, 9) + 0;
+				$dt->set_time_zone('UTC');
+				$dt->{+__PACKAGE__}{trailer} = $z;
 			}
 		};
 		return $dt if $dt;
 	}
-
+	
+	if ($string =~ /^(\d{4})-(0[1-9]|1[0-2])-([0-2][0-9]|30|31)T([0-1][0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9]|60)(\.[0-9]+)?(Z?)$/)
+	{
+		my $dt;
+		my $z    = $8 // '';
+		my $nano = $7 // '';
+		eval {
+			$dt = $class->SUPER::new( year => $1, month=>$2, day=>$3, hour=>$4, minute=>$5, second=>$6 );
+			$dt->{+__PACKAGE__}{format} = 'DT';
+			if (length $nano and defined $dt)
+			{
+				$dt->{+__PACKAGE__}{format} = length($nano) - 1;
+				$dt->{rd_nanosecs} = substr($nano.('0' x 9), 1, 9) + 0;
+			}
+			if ($z eq 'Z' and defined $dt)
+			{
+				$dt->set_time_zone('UTC');
+				$dt->{+__PACKAGE__}{trailer} = $z;
+			}
+		};
+		return $dt if $dt;
+	}
+	
 	return undef;
+}
+
+sub set_time_zone
+{
+	my ($self, @args) = @_;
+	delete $self->{+__PACKAGE__}{trailer};
+	$self->SUPER::set_time_zone(@args);
 }
 
 sub _dtxa_stringify
 {
 	my ($self) = @_;
-	my $class = ref $self;
 	
-	if ($self->{$class}{format} eq 'D')
+	unless (exists $self->{+__PACKAGE__})
 	{
-		return $self->ymd('-');
+		return $self->SUPER::_stringify;
+	}
+	
+	my $trailer = $self->{+__PACKAGE__}{trailer} // '';
+	
+	if ($self->{+__PACKAGE__}{format} eq 'D')
+	{
+		return $self->ymd('-').$trailer;
 	}
 
-	elsif ($self->{$class}{format} eq 'DT')
+	elsif ($self->{+__PACKAGE__}{format} eq 'DT')
 	{
-		return sprintf('%sT%s', $self->ymd('-'), $self->hms(':'));
+		return sprintf('%sT%s%s', $self->ymd('-'), $self->hms(':'), $trailer);
 	}
 
 	else
 	{
 		my $nano = substr(
-			$self->strftime('%N') . ('0' x $self->{$class}{format}),
+			$self->strftime('%N') . ('0' x $self->{+__PACKAGE__}{format}),
 			0,
-			$self->{$class}{format},
+			$self->{+__PACKAGE__}{format},
 			);
-		return sprintf('%sT%s.%s', $self->ymd('-'), $self->hms(':'), $nano);
+		return sprintf('%sT%s.%s%s', $self->ymd('-'), $self->hms(':'), $nano, $trailer);
 	}
 }
 
@@ -155,7 +201,12 @@ were given in.
 The date formats supported are:
 
  yyyy-mm-dd
+ yyyy-mm-ddZ
  yyyy-mm-ddThh:mm:ss
+ yyyy-mm-ddThh:mm:ssZ
+
+The optional trailing 'Z' puts the datetime into the UTC timezone. Otherwise
+the datetime will be in DateTime's default (floating) timezone.
 
 Fractional seconds are also supported, to an arbitrary number of decimal
 places. However, as C<DateTime> only supports nanosecond precision, any
@@ -185,6 +236,48 @@ the current time.
 
 An alias C<dt> is also available. They're exactly the same.
 
+=head2 Object-Oriented Interface
+
+This somewhat negates the purpose of the module, but it's also possible
+to use it without exporting anything, in the usual normal Perl object-oriented
+fashion:
+
+ use DateTimeX::Auto;
+ 
+ my $dt1 = DateTimeX::Auto->new('2000-01-01T12:00:00.1234');
+ 
+ # Traditional DateTime style
+ my $dt2 = DateTimeX::Auto->new(
+   year  => 2000,
+   month => 2,
+   day   => 3,
+   );
+
+Called in the traditional DateTime style, throws an exception if the date
+isn't valid. Called in the DateTimeX::Auto stringy style, returns undef
+if the date isn't in a recognised format, but throws if it's otherwise
+invalid (e.g. 30th of February).
+
+=head1 EXAMPLES
+
+ use DateTimeX::Auto ':auto';
+ 
+ my $date = '2000-01-01';
+ while ($date < '2000-02-01')
+ {
+   print "$date\n";
+   $date->add(days => 1);
+ }
+
+ use DateTimeX::Auto 'd';
+ 
+ my $date = d('2000-01-01');
+ while ($date < d('2000-02-01'))
+ {
+   print "$date\n";
+   $date->add(days => 1);
+ }
+
 =head1 SEE ALSO
 
 L<DateTime>, L<DateTimeX::Easy>.
@@ -200,3 +293,8 @@ Copyright 2011 Toby Inkster
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
+=head1 DISCLAIMER OF WARRANTIES
+
+THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
