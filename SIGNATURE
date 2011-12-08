@@ -14,10 +14,10 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 b3b2cf9f919d82b37932919018ec541a43c99c8a Changes
+SHA1 e92489b08b7d87c6a74253561bd8ba890c5f498b Changes
 SHA1 f3296a09eb07898f3ba6dd0ece615dafc1b57e16 LICENSE
 SHA1 1a69daa3ce4e8ff2fb5bd8adb71610e06f58ab19 MANIFEST
-SHA1 d93032a2eac91cace19fa02a0a1ac5a7bfe66cab META.yml
+SHA1 b6b986d146f9de93e2d8f4ac7e3f8771ddde1e3d META.yml
 SHA1 c8bbc7c0230334690da1fb48d6d13df4c1631a80 Makefile.PL
 SHA1 de69b0861726aa793bc6a930b3324157233cb45f README
 SHA1 7bf2e8960978bfbd3a8196e23a170191a46b5cdd examples/example.pl
@@ -40,8 +40,8 @@ SHA1 6b807287940754cc31a3db59f2b22e363d5525be inc/Module/Package/Dist/RDF.pm
 SHA1 775bd24f2fdbb6dce51a8b5b0cdb01fccfce83c4 inc/Scalar/Util.pm
 SHA1 b1b664983568bf822c327599eb88e223483ae96a inc/Scalar/Util/PP.pm
 SHA1 eef6bff62046bff2ce08ba132d0b58fba30f40b4 inc/YAML/Tiny.pm
-SHA1 66787db1bed7f78d63fa6c127007d3a030976891 lib/DateTimeX/Auto.pm
-SHA1 d90622a2eb7272db78bed4c7a30b46d4966d6147 meta/changes.ttl
+SHA1 c50e1699149eb75841b81774bb944ac10adeae0a lib/DateTimeX/Auto.pm
+SHA1 a942ce5dc1958764a04a90686425c42e6156be87 meta/changes.ttl
 SHA1 07e0a9a3bf328c47282b72357eccf2e5a512a721 meta/doap.ttl
 SHA1 af9f66eeaaa078ad074e5ae600f388d982db8afd meta/makefile.ttl
 SHA1 31e50f379d77030facbbe9c922dac144e7281def t/01basic.t
@@ -49,7 +49,7 @@ SHA1 66c4ff3a12a606d57d00f3c3500b9ea86b7a5df1 t/02cloning.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 
-iEYEARECAAYFAk7g3aYACgkQzr+BKGoqfTl6XwCgly1HRJPSOBBdm2VtsiphFvps
-6rgAn1tv/ACibVoGpEjMl6QPQa4nauZ5
-=+MUv
+iEYEARECAAYFAk7g3w8ACgkQzr+BKGoqfTlf1gCcCjbWZlvkDijnqNgBlHMFCtGq
+3QkAnjuGnRSRdjqU4Q43X6XSJZSOGVUU
+=aN54
 -----END PGP SIGNATURE-----

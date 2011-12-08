@@ -8,9 +8,19 @@ Maintainer:   Toby Inkster <mailto:tobyink@cpan.org>
 
 0.003  2011-12-08
 
+ - Allow constructor to be called with traditional DateTime->new arguments.
+ - Support UTC timezone.
+ - (Packaging) Improved test cases.
+ - (Bugfix) Make $dt->from_object work, which is used internally by a lot
+   of DateTime maths.
+ - (Packaging) Module::Package::RDF
 
 0.002  2011-07-20
 
+ - The overloaded q() function is now less enthusiastic. For example, it
+   won't try to handle parts of qq() interpolated strings.
+ - (Documentation) Provide more examples.
+ - (Documentation) Document object-oriented constructor.
 
 0.001  2011-07-16
 # First release

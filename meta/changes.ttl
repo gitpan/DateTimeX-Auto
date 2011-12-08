@@ -21,7 +21,7 @@ my:v_0-002
 	dc:issued       "2011-07-20"^^xsd:date ;
 	:revision       "0.002"^^xsd:string ;
 	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.002.tar.gz> ;
-	dcs:changes [
+	dcs:changeset [
 		dcs:versus my:v_0-001 ;
 		dcs:item   [ a dcs:Documentation ; rdfs:label "Document object-oriented constructor."@en ] ;
 		dcs:item   [ a dcs:Documentation ; rdfs:label "Provide more examples."@en ] ;
@@ -34,7 +34,7 @@ my:v_0-003
 	dc:issued       "2011-12-08"^^xsd:date ;
 	:revision       "0.003"^^xsd:string ;
 	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.003.tar.gz> ;
-	dcs:changes [
+	dcs:changeset [
 		dcs:versus my:v_0-002 ;
 		dcs:item   [ rdfs:label "Allow constructor to be called with traditional DateTime->new arguments."@en ] ;
 		dcs:item   [ rdfs:label "Support UTC timezone."@en ] ;

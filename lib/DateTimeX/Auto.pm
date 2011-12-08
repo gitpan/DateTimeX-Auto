@@ -19,7 +19,10 @@ our %_const_handlers = (
 );
 our @EXPORT_OK = qw[d dt];
 
-our $VERSION = '0.002';
+BEGIN {
+	$DateTimeX::Auto::AUTHORITY = 'cpan:TOBYINK';
+	$DateTimeX::Auto::VERSION   = '0.003';
+}
 
 sub import
 {
