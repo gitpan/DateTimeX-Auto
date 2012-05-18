@@ -33,4 +33,6 @@ foreach my $k (sort keys %d)
 	print "\n";
 }
 
+print '2000-01-01' + 'P2.5D', "\n";
+
 print ref('2000-01-01')."\n";

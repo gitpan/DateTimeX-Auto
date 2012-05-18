@@ -4,8 +4,7 @@ NAME
 SYNOPSIS
      use DateTimeX::Auto ':auto';
  
-     my $ga_start = '2000-04-06';
-     $ga_start->add(years => 10);
+     my $ga_start = '2000-04-06' + 'P10Y';
      printf("%s %s\n", $ga_start, ref $ga_start);  # 2010-04-06 DateTime
  
      {
@@ -51,6 +50,14 @@ DESCRIPTION
 
      print ref('2000-01-01')."\n";   # DateTime
 
+    Additionally, ISO 8601 durations are supported:
+
+      my $dt = '2000-01-01';
+      say( $dt + 'P4Y2M12D' );  # 2004-03-13
+
+    Durations are possibly not quite as clever at preserving the incoming
+    string formatting.
+
   The "d" and "dt" Functions
     As an alternative "DateTimeX::Auto" can export a function called "d".
     This might be useful if you'd prefer not to have every string constant
@@ -64,6 +71,10 @@ DESCRIPTION
     the current time.
 
     An alias "dt" is also available. They're exactly the same.
+
+  The "dur" Function
+    Called with an ISO 8601 duration string, returns a
+    DateTimeX::Auto::Duration object.
 
   Object-Oriented Interface
     This somewhat negates the purpose of the module, but it's also possible
@@ -86,6 +97,9 @@ DESCRIPTION
     undef if the date isn't in a recognised format, but throws if it's
     otherwise invalid (e.g. 30th of February).
 
+    There is similarly a DateTimeX::Auto::Duration class which is a similar
+    thin wrapper around DateTime::Duration.
+
 EXAMPLES
      use DateTimeX::Auto ':auto';
  
@@ -93,7 +107,7 @@ EXAMPLES
      while ($date < '2000-02-01')
      {
        print "$date\n";
-       $date->add(days => 1);
+       $date += 'P1D'; # add one day
      }
 
      use DateTimeX::Auto 'd';
@@ -102,17 +116,17 @@ EXAMPLES
      while ($date < d('2000-02-01'))
      {
        print "$date\n";
-       $date->add(days => 1);
+       $date += dur('P1D'); # add one day
      }
 
 SEE ALSO
-    DateTime, DateTimeX::Easy.
+    DateTime, DateTime::Duration, DateTimeX::Easy.
 
 AUTHOR
     Toby Inkster <tobyink@cpan.org>.
 
 COPYRIGHT
-    Copyright 2011 Toby Inkster
+    Copyright 2011-2012 Toby Inkster
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.

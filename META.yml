@@ -41,4 +41,4 @@ resources:
   homepage: https://metacpan.org/release/DateTimeX-Auto
   license: http://dev.perl.org/licenses/
   repository: https://bitbucket.org/tobyink/p5-datetimex-auto
-version: 0.003
+version: 0.004

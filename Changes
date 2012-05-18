@@ -6,23 +6,26 @@ Home page:    <https://metacpan.org/release/DateTimeX-Auto>
 Bug tracker:  <http://rt.cpan.org/Dist/Display.html?Queue=DateTimeX-Auto>
 Maintainer:   Toby Inkster <mailto:tobyink@cpan.org>
 
+0.004  2012-05-18
+
+ - (Addition) Support DateTime::Durations.
+
 0.003  2011-12-08
 
- - Allow constructor to be called with traditional DateTime->new arguments.
- - Support UTC timezone.
- - (Packaging) Improved test cases.
  - (Bugfix) Make $dt->from_object work, which is used internally by a lot
    of DateTime maths.
+ - (Packaging) Improved test cases.
  - (Packaging) Module::Package::RDF
+ - Allow constructor to be called with traditional DateTime->new arguments.
+ - Support UTC timezone.
 
 0.002  2011-07-20
 
+ - (Documentation) Document object-oriented constructor.
+ - (Documentation) Provide more examples.
  - The overloaded q() function is now less enthusiastic. For example, it
    won't try to handle parts of qq() interpolated strings.
- - (Documentation) Provide more examples.
- - (Documentation) Document object-oriented constructor.
 
-0.001  2011-07-16
-# First release
+0.001  2011-07-16  # First release
 
 

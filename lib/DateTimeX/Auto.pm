@@ -1,172 +1,308 @@
-package DateTimeX::Auto;
-
-use 5.008;
-use strict;
-use base qw[DateTime Exporter];
-use overload '""' => \&_dtxa_stringify;
-use Object::AUTHORITY;
-use UNIVERSAL::ref;
-
-use Carp qw[];
-use DateTime::Format::Strptime qw[];
-
-our %_const_handlers = (
-	q  => sub
-	{
-		return $_[1] unless $_[2] eq 'q';
-		return (__PACKAGE__->new($_[0]) // $_[1]);
-	},
-);
-our @EXPORT_OK = qw[d dt];
-
-BEGIN {
-	$DateTimeX::Auto::AUTHORITY = 'cpan:TOBYINK';
-	$DateTimeX::Auto::VERSION   = '0.003';
-}
-
-sub import
 {
-	my $class   = shift;
-	my $imports = join ' ', @_;
-	
-	if ($imports =~ /(?:\b|^)\:auto(?:\b|$)/)
-	{
-		overload::constant %_const_handlers;
-	}
-	
-	while ($imports =~ /(?:\b|^)(d|dt)(?:\b|^)/g)
-	{
-		$class->export_to_level(1, undef, $1);
-	}
-}
+	package DateTimeX::Auto;
 
-sub unimport
-{
-	overload::remove_constant(q => undef);
-}
+	use 5.008;
+	use strict;
+	use base qw[DateTime Exporter];
+	use overload '""' => \&_dtxa_stringify;
+	use Object::AUTHORITY;
+	use UNIVERSAL::ref;
+	use constant ref => 'DateTime';
 
-sub ref
-{
-	return 'DateTime';
-}
+	use Carp qw[];
+	use DateTime::Format::Strptime qw[];
 
-sub d
-{
-	my ($string) = @_;
-	
-	return DateTime->now unless @_;
-	
-	my $dt = __PACKAGE__->new("$string");
-	return $dt if $dt;
-	
-	Carp::croak("Could not turn '$string' into a DateTime.");
-}
-
-*dt = \&d;
-
-sub from_object
-{
-	my ($proto, %args) = @_;
-	
-	my %x;
-	my $rv = $proto->SUPER::from_object(%args);
-	$rv->{+__PACKAGE__} = { %x } if %x = %{ $args{object}->{+__PACKAGE__} };
-	
-	return $rv;
-}
-
-sub new
-{
-	if (scalar @_ > 2)
-	{
-		my $class = shift;
-		return $class->SUPER::new(@_);
-	}
-	
-	my ($class, $string) = @_;
-	
-	if ($string =~ /^(\d{4})-(0[1-9]|1[0-2])-([0-2][0-9]|30|31)(Z?)$/)
-	{
-		my $dt;
-		my $z = $4 // '';
-		eval {
-			$dt = $class->SUPER::new( year => $1, month=>$2, day=>$3, hour=>0, minute=>0, second=>0 );
-			$dt->{+__PACKAGE__}{format} = 'D';
-			if ($z eq 'Z' and defined $dt)
-			{
-				$dt->set_time_zone('UTC');
-				$dt->{+__PACKAGE__}{trailer} = $z;
-			}
-		};
-		return $dt if $dt;
-	}
-	
-	if ($string =~ /^(\d{4})-(0[1-9]|1[0-2])-([0-2][0-9]|30|31)T([0-1][0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9]|60)(\.[0-9]+)?(Z?)$/)
-	{
-		my $dt;
-		my $z    = $8 // '';
-		my $nano = $7 // '';
-		eval {
-			$dt = $class->SUPER::new( year => $1, month=>$2, day=>$3, hour=>$4, minute=>$5, second=>$6 );
-			$dt->{+__PACKAGE__}{format} = 'DT';
-			if (length $nano and defined $dt)
-			{
-				$dt->{+__PACKAGE__}{format} = length($nano) - 1;
-				$dt->{rd_nanosecs} = substr($nano.('0' x 9), 1, 9) + 0;
-			}
-			if ($z eq 'Z' and defined $dt)
-			{
-				$dt->set_time_zone('UTC');
-				$dt->{+__PACKAGE__}{trailer} = $z;
-			}
-		};
-		return $dt if $dt;
-	}
-	
-	return undef;
-}
-
-sub set_time_zone
-{
-	my ($self, @args) = @_;
-	delete $self->{+__PACKAGE__}{trailer};
-	$self->SUPER::set_time_zone(@args);
-}
-
-sub _dtxa_stringify
-{
-	my ($self) = @_;
-	
-	unless (exists $self->{+__PACKAGE__})
-	{
-		return $self->SUPER::_stringify;
-	}
-	
-	my $trailer = $self->{+__PACKAGE__}{trailer} // '';
-	
-	if ($self->{+__PACKAGE__}{format} eq 'D')
-	{
-		return $self->ymd('-').$trailer;
-	}
-
-	elsif ($self->{+__PACKAGE__}{format} eq 'DT')
-	{
-		return sprintf('%sT%s%s', $self->ymd('-'), $self->hms(':'), $trailer);
-	}
-
-	else
-	{
-		my $nano = substr(
-			$self->strftime('%N') . ('0' x $self->{+__PACKAGE__}{format}),
-			0,
-			$self->{+__PACKAGE__}{format},
+	our %_const_handlers = (
+		q  => sub
+		{
+			return $_[1] unless $_[2] eq 'q';
+			return (
+				__PACKAGE__->new($_[0])
+				|| DateTimeX::Auto::Duration->new($_[0])
+				|| $_[1]
 			);
-		return sprintf('%sT%s.%s%s', $self->ymd('-'), $self->hms(':'), $nano, $trailer);
+		},
+	);
+	our @EXPORT_OK = qw[d dt dur];
+
+	BEGIN {
+		$DateTimeX::Auto::AUTHORITY = 'cpan:TOBYINK';
+		$DateTimeX::Auto::VERSION   = '0.004';
+	}
+
+	sub import
+	{
+		my $class   = shift;
+		my $imports = join ' ', @_;
+		
+		if ($imports =~ /(?:\b|^)\:auto(?:\b|$)/)
+		{
+			overload::constant %_const_handlers;
+		}
+		
+		while ($imports =~ /(?:\b|^)(d|dt|dur)(?:\b|^)/g)
+		{
+			$class->export_to_level(1, undef, $1);
+		}
+	}
+
+	sub unimport
+	{
+		overload::remove_constant(q => undef);
+	}
+
+	sub d
+	{
+		my ($string) = @_;
+		
+		return DateTime->now unless @_;
+		
+		my $dt = __PACKAGE__->new("$string");
+		return $dt if $dt;
+		
+		Carp::croak("Could not turn '$string' into a DateTime.");
+	}
+
+	*dt = \&d;
+
+	sub dur
+	{
+		my ($string) = @_;
+		
+		my $dur = DateTimeX::Auto::Duration->new("$string");
+		return $dur if $dur;
+		
+		Carp::croak("Could not turn '$string' into a DateTime::Duration.");
+	}
+
+	sub from_object
+	{
+		my ($proto, %args) = @_;
+		
+		my %x;
+		my $rv = $proto->SUPER::from_object(%args);
+		$rv->{+__PACKAGE__} = { %x } if %x = %{ $args{object}->{+__PACKAGE__} };
+		
+		return $rv;
+	}
+
+	sub new
+	{
+		if (scalar @_ > 2)
+		{
+			my $class = shift;
+			return $class->SUPER::new(@_);
+		}
+		
+		my ($class, $string) = @_;
+		
+		if ($string =~ /^(\d{4})-(0[1-9]|1[0-2])-([0-2][0-9]|30|31)(Z?)$/)
+		{
+			my $dt;
+			my $z = $4 // '';
+			eval {
+				$dt = $class->SUPER::new( year => $1, month=>$2, day=>$3, hour=>0, minute=>0, second=>0 );
+				$dt->{+__PACKAGE__}{format} = 'D';
+				if ($z eq 'Z' and defined $dt)
+				{
+					$dt->set_time_zone('UTC');
+					$dt->{+__PACKAGE__}{trailer} = $z;
+				}
+			};
+			return $dt if $dt;
+		}
+		
+		if ($string =~ /^(\d{4})-(0[1-9]|1[0-2])-([0-2][0-9]|30|31)T([0-1][0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9]|60)(\.[0-9]+)?(Z?)$/)
+		{
+			my $dt;
+			my $z    = $8 // '';
+			my $nano = $7 // '';
+			eval {
+				$dt = $class->SUPER::new( year => $1, month=>$2, day=>$3, hour=>$4, minute=>$5, second=>$6 );
+				$dt->{+__PACKAGE__}{format} = 'DT';
+				if (length $nano and defined $dt)
+				{
+					$dt->{+__PACKAGE__}{format} = length($nano) - 1;
+					$dt->{rd_nanosecs} = substr($nano.('0' x 9), 1, 9) + 0;
+				}
+				if ($z eq 'Z' and defined $dt)
+				{
+					$dt->set_time_zone('UTC');
+					$dt->{+__PACKAGE__}{trailer} = $z;
+				}
+			};
+			return $dt if $dt;
+		}
+		
+		return undef;
+	}
+
+	sub set_time_zone
+	{
+		my ($self, @args) = @_;
+		delete $self->{+__PACKAGE__}{trailer};
+		$self->SUPER::set_time_zone(@args);
+	}
+
+	sub _dtxa_stringify
+	{
+		my ($self) = @_;
+		
+		unless (exists $self->{+__PACKAGE__})
+		{
+			return $self->SUPER::_stringify;
+		}
+		
+		my $trailer = $self->{+__PACKAGE__}{trailer} // '';
+		
+		if ($self->{+__PACKAGE__}{format} eq 'D')
+		{
+			return $self->ymd('-').$trailer;
+		}
+
+		elsif ($self->{+__PACKAGE__}{format} eq 'DT')
+		{
+			return sprintf('%sT%s%s', $self->ymd('-'), $self->hms(':'), $trailer);
+		}
+
+		else
+		{
+			my $nano = substr(
+				$self->strftime('%N') . ('0' x $self->{+__PACKAGE__}{format}),
+				0,
+				$self->{+__PACKAGE__}{format},
+				);
+			return sprintf('%sT%s.%s%s', $self->ymd('-'), $self->hms(':'), $nano, $trailer);
+		}
 	}
 }
 
-1;
+{
+	package DateTimeX::Auto::Duration;
 
+	use 5.008;
+	use strict;
+	use base qw[DateTime::Duration];
+	use overload '""' => \&_dtxda_stringify;
+	use Object::AUTHORITY;
+	use UNIVERSAL::ref;
+	use constant ref => 'DateTime::Duration';
+
+	use Carp qw[];
+
+	BEGIN {
+		$DateTimeX::Auto::Duration::AUTHORITY = 'cpan:TOBYINK';
+		$DateTimeX::Auto::Duration::VERSION   = '0.004';
+	}
+
+	sub new
+	{
+		if (scalar @_ > 2)
+		{
+			my $class = shift;
+			return $class->SUPER::new(@_);
+		}
+
+		my ($class, $string) = @_;
+
+		return undef unless $string =~ /^
+			([\+\-])?          # Potentially negitive...
+			P                  # Period of...
+			(?:([\d\.]*)Y)?    # n Years
+			(?:([\d\.]*)M)?    # n Months
+			(?:([\d\.]*)W)?    # n Weeks
+			(?:([\d\.]*)D)?    # n Days
+			(?:                 
+				 T               # And a time of...
+				 (?:([\d\.]*)H)? # n Hours
+				 (?:([\d\.]*)M)? # n Minutes
+				 (?:([\d\.]*)S)? # n Seconds
+			)?
+		/ix;
+			
+		my $X = {
+			I   => $1,
+			y   => $2,
+			m   => $3,
+			w   => $4,
+			d   => $5,
+			h   => $6,
+			min => $7,
+			s   => $8,
+			n   => 0,
+		};
+
+		# Handle fractional
+		foreach my $frac (qw(y=12.m m=30.d w=7.d d=24.h h=60.min min=60.s s=1000000000.n))
+		{
+			my ($big, $mult, $small) = split /[\=\.]/, $frac;
+			next unless $X->{$big} =~ /\./;
+
+			my $int_part  = int($X->{$big});
+			my $frac_part = $X->{$big} - $int_part;
+
+			$X->{$big}    =  $int_part;
+			$X->{$small} += ($mult * $frac_part);
+		}
+		$X->{'n'} = int($X->{'n'});
+
+		# Construct and return object.
+		my $dur = $class->SUPER::new(
+			years       => $X->{'y'}   || 0,
+			months      => $X->{'m'}   || 0,
+			weeks       => $X->{'w'}   || 0,
+			days        => $X->{'d'}   || 0,
+			hours       => $X->{'h'}   || 0,
+			minutes     => $X->{'min'} || 0,
+			seconds     => $X->{'s'}   || 0,
+			nanoseconds => $X->{'n'}   || 0,
+		);
+		
+		$X->{'I'} eq '-'
+			? $dur->inverse
+			: $dur;
+	}
+
+	sub _dtxda_stringify
+	{
+		my $self = shift;
+		my $str;
+
+		# We coerce weeks into days and nanoseconds into fractions of a second
+		# for compatibility with xsd:duration.
+
+		if ($self->is_negative)
+			{ $str .= '-P'; }
+		else
+			{ $str .= 'P'; }
+
+		if ($self->years)
+			{ $str .= $self->years.'Y'; }
+
+		if ($self->months)
+			{ $str .= $self->months.'M'; }
+
+		if ($self->weeks || $self->days)
+			{ $str .= ($self->days + (7 * $self->weeks)).'D'; }
+
+		$str .= 'T';
+
+		if ($self->hours)
+			{ $str .= $self->hours.'H'; }
+
+		if ($self->minutes)
+			{ $str .= $self->minutes.'M'; }
+
+		if ($self->seconds || $self->nanoseconds)
+			{ $str .= ($self->seconds + ($self->nanoseconds / 1000000000)).'S'; }
+
+		$str =~ s/T$//;
+
+		return $str;
+	}
+}
+
+__FILE__
 __END__
 
 =head1 NAME
@@ -177,8 +313,7 @@ DateTimeX::Auto - use DateTime without needing to call constructors
 
  use DateTimeX::Auto ':auto';
  
- my $ga_start = '2000-04-06';
- $ga_start->add(years => 10);
+ my $ga_start = '2000-04-06' + 'P10Y';
  printf("%s %s\n", $ga_start, ref $ga_start);  # 2010-04-06 DateTime
  
  {
@@ -224,6 +359,14 @@ C<DateTime> objects.
 
  print ref('2000-01-01')."\n";   # DateTime
 
+Additionally, ISO 8601 durations are supported:
+
+  my $dt = '2000-01-01';
+  say( $dt + 'P4Y2M12D' );  # 2004-03-13
+
+Durations are possibly not quite as clever at preserving the incoming
+string formatting.
+
 =head2 The C<< d >> and C<< dt >> Functions
 
 As an alternative C<DateTimeX::Auto> can export a function called C<d>.
@@ -238,6 +381,11 @@ croaks. If called with no arguments, returns a C<DateTime> representing
 the current time.
 
 An alias C<dt> is also available. They're exactly the same.
+
+=head2 The C<< dur >> Function
+
+Called with an ISO 8601 duration string, returns a
+L<DateTimeX::Auto::Duration> object.
 
 =head2 Object-Oriented Interface
 
@@ -261,6 +409,9 @@ isn't valid. Called in the DateTimeX::Auto stringy style, returns undef
 if the date isn't in a recognised format, but throws if it's otherwise
 invalid (e.g. 30th of February).
 
+There is similarly a DateTimeX::Auto::Duration class which is a similar
+thin wrapper around DateTime::Duration.
+
 =head1 EXAMPLES
 
  use DateTimeX::Auto ':auto';
@@ -269,7 +420,7 @@ invalid (e.g. 30th of February).
  while ($date < '2000-02-01')
  {
    print "$date\n";
-   $date->add(days => 1);
+   $date += 'P1D'; # add one day
  }
 
  use DateTimeX::Auto 'd';
@@ -278,12 +429,12 @@ invalid (e.g. 30th of February).
  while ($date < d('2000-02-01'))
  {
    print "$date\n";
-   $date->add(days => 1);
+   $date += dur('P1D'); # add one day
  }
 
 =head1 SEE ALSO
 
-L<DateTime>, L<DateTimeX::Easy>.
+L<DateTime>, L<DateTime::Duration>, L<DateTimeX::Easy>.
 
 =head1 AUTHOR
 
@@ -291,7 +442,7 @@ Toby Inkster E<lt>tobyink@cpan.orgE<gt>.
 
 =head1 COPYRIGHT
 
-Copyright 2011 Toby Inkster
+Copyright 2011-2012 Toby Inkster
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

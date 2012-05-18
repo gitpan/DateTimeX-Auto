@@ -43,3 +43,14 @@ my:v_0-003
 		dcs:item   [ rdfs:label "Make $dt->from_object work, which is used internally by a lot of DateTime maths."@en ; a dcs:Bugfix ]
 		] .
 
+my:project :release my:v_0-004.
+my:v_0-004
+	a               :Version ;
+	dc:issued       "2012-05-18"^^xsd:date ;
+	:revision       "0.004"^^xsd:string ;
+	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.004.tar.gz> ;
+	dcs:changeset [
+		dcs:versus my:v_0-003 ;
+		dcs:item   [ rdfs:label "Support DateTime::Durations."@en ; a dcs:Addition ]
+		] .
+
