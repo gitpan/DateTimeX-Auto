@@ -27,7 +27,7 @@
 
 	BEGIN {
 		$DateTimeX::Auto::AUTHORITY = 'cpan:TOBYINK';
-		$DateTimeX::Auto::VERSION   = '0.004';
+		$DateTimeX::Auto::VERSION   = '0.005';
 	}
 
 	sub import
@@ -99,7 +99,7 @@
 		if ($string =~ /^(\d{4})-(0[1-9]|1[0-2])-([0-2][0-9]|30|31)(Z?)$/)
 		{
 			my $dt;
-			my $z = $4 // '';
+			my $z = defined($4) ? $4 : '';
 			eval {
 				$dt = $class->SUPER::new( year => $1, month=>$2, day=>$3, hour=>0, minute=>0, second=>0 );
 				$dt->{+__PACKAGE__}{format} = 'D';
@@ -115,8 +115,8 @@
 		if ($string =~ /^(\d{4})-(0[1-9]|1[0-2])-([0-2][0-9]|30|31)T([0-1][0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9]|60)(\.[0-9]+)?(Z?)$/)
 		{
 			my $dt;
-			my $z    = $8 // '';
-			my $nano = $7 // '';
+			my $z    = defined($8) ? $8 : '';
+			my $nano = defined($7) ? $7 : '';
 			eval {
 				$dt = $class->SUPER::new( year => $1, month=>$2, day=>$3, hour=>$4, minute=>$5, second=>$6 );
 				$dt->{+__PACKAGE__}{format} = 'DT';
@@ -153,7 +153,8 @@
 			return $self->SUPER::_stringify;
 		}
 		
-		my $trailer = $self->{+__PACKAGE__}{trailer} // '';
+		my $trailer = $self->{+__PACKAGE__}{trailer};
+		$trailer = '' unless defined $trailer;
 		
 		if ($self->{+__PACKAGE__}{format} eq 'D')
 		{
@@ -192,7 +193,7 @@
 
 	BEGIN {
 		$DateTimeX::Auto::Duration::AUTHORITY = 'cpan:TOBYINK';
-		$DateTimeX::Auto::Duration::VERSION   = '0.004';
+		$DateTimeX::Auto::Duration::VERSION   = '0.005';
 	}
 
 	sub new
