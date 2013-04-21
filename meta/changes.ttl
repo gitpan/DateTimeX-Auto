@@ -66,3 +66,14 @@ my:v_0-005
 		dcs:item   [ rdfs:label "Replace a few uses of the defined-or operator (//) with defined($foo)?$foo:$bar, for back-compat with Perl 5.8."@en ; a dcs:Bugfix ]
 		] .
 
+my:project :release my:v_0-006.
+my:v_0-006
+	a               :Version;
+	dc:issued       "2013-04-21"^^xsd:date;
+	:revision       "0.006"^^xsd:string;
+	:file-release   <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.006.tar.gz>;
+	dcs:changeset [
+		dcs:versus my:v_0-005;
+		dcs:item   [ rdfs:label "Stop bundling old version of Scalar::Util."@en ; a dcs:Packaging ];
+	].
+

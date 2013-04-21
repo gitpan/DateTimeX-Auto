@@ -1,0 +1,156 @@
+@prefix cpan:  <http://purl.org/NET/cpan-uri/person/> .
+@prefix cpant: <http://purl.org/NET/cpan-uri/terms#> .
+@prefix dc:    <http://purl.org/dc/terms/> .
+@prefix dcs:   <http://ontologi.es/doap-changeset#> .
+@prefix dist:  <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/> .
+@prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix nfo:   <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+
+dist:project
+	a                 doap:Project;
+	doap:name         "DateTimeX-Auto";
+	cpant:perl_version_from _:B1;
+	cpant:readme_from _:B1;
+	cpant:requires    "Carp 0";
+	cpant:requires    "DateTime 0";
+	cpant:requires    "DateTime::Format::Strptime 0";
+	cpant:requires    "Object::AUTHORITY 0";
+	cpant:requires    "UNIVERSAL::ref 0";
+	cpant:test_requires "Test::More 0.61";
+	cpant:version_from _:B1;
+	doap:bug-database <http://rt.cpan.org/Dist/Display.html?Queue=DateTimeX-Auto>;
+	doap:category     [ rdfs:label "Perl" ];
+	doap:category     [ rdfs:label "Date" ];
+	doap:category     [ rdfs:label "Time" ];
+	doap:category     [ rdfs:label "DateTime" ];
+	doap:category     [ rdfs:label "DateTimeX" ];
+	doap:category     [ rdfs:label "overload" ];
+	doap:category     [ rdfs:label "constant" ];
+	doap:created      "2011-07-06"^^xsd:date;
+	doap:developer    <http://tobyinkster.co.uk/#i>;
+	doap:documenter   <http://tobyinkster.co.uk/#i>;
+	doap:download-page <https://metacpan.org/release/DateTimeX-Auto>;
+	doap:homepage     <https://metacpan.org/release/DateTimeX-Auto>;
+	doap:license      <http://dev.perl.org/licenses/>;
+	doap:maintainer   <http://tobyinkster.co.uk/#i>;
+	doap:programming-language "Perl";
+	doap:release      dist:v_0-001;
+	doap:release      dist:v_0-002;
+	doap:release      dist:v_0-003;
+	doap:release      dist:v_0-004;
+	doap:release      dist:v_0-005;
+	doap:release      dist:v_0-006;
+	doap:repository   [
+		a doap:HgRepository;
+		doap:browse <https://bitbucket.org/tobyink/p5-datetimex-auto>;
+	];
+	doap:shortdesc    "use DateTime without needing to call constructors"@en;
+	doap:tester       <http://tobyinkster.co.uk/#i>.
+
+dist:v_0-001
+	a                 doap:Version;
+	rdfs:label        "First release"@en;
+	dc:issued         "2011-07-16"^^xsd:date;
+	doap:file-release <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.001.tar.gz>;
+	doap:revision     "0.001"^^xsd:string.
+
+dist:v_0-002
+	a                 doap:Version;
+	dc:issued         "2011-07-20"^^xsd:date;
+	dcs:changeset     [
+		dcs:item [
+			a dcs:Documentation;
+			rdfs:label "Document object-oriented constructor."@en;
+		];
+		dcs:item [
+			a dcs:Documentation;
+			rdfs:label "Provide more examples."@en;
+		];
+		dcs:item [
+			rdfs:label "The overloaded q() function is now less enthusiastic. For example, it won't try to handle parts of qq() interpolated strings."@en;
+		];
+		dcs:versus dist:v_0-001;
+	];
+	doap:file-release <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.002.tar.gz>;
+	doap:revision     "0.002"^^xsd:string.
+
+dist:v_0-003
+	a                 doap:Version;
+	dc:issued         "2011-12-08"^^xsd:date;
+	dcs:changeset     [
+		dcs:item [
+			rdfs:label "Allow constructor to be called with traditional DateTime->new arguments."@en;
+		];
+		dcs:item [ rdfs:label "Support UTC timezone."@en ];
+		dcs:item [
+			a dcs:Packaging;
+			rdfs:label "Improved test cases."@en;
+		];
+		dcs:item [
+			a dcs:Packaging;
+			rdfs:label "Module::Package::RDF"@en;
+		];
+		dcs:item [
+			a dcs:Bugfix;
+			rdfs:label "Make $dt->from_object work, which is used internally by a lot of DateTime maths."@en;
+		];
+		dcs:versus dist:v_0-002;
+	];
+	doap:file-release <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.003.tar.gz>;
+	doap:revision     "0.003"^^xsd:string.
+
+dist:v_0-004
+	a                 doap:Version;
+	dc:issued         "2012-05-18"^^xsd:date;
+	dcs:changeset     [
+		dcs:item [
+			a dcs:Addition;
+			rdfs:label "Support DateTime::Durations."@en;
+		];
+		dcs:versus dist:v_0-003;
+	];
+	doap:file-release <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.004.tar.gz>;
+	doap:revision     "0.004"^^xsd:string.
+
+dist:v_0-005
+	a                 doap:Version;
+	rdfs:label        "The 'Why You No Upgrade?' Release";
+	dc:issued         "2012-05-20"^^xsd:date;
+	dcs:changeset     [
+		dcs:item [
+			a dcs:Bugfix;
+			rdfs:label "Replace a few uses of the defined-or operator (//) with defined($foo)?$foo:$bar, for back-compat with Perl 5.8."@en;
+		];
+		dcs:versus dist:v_0-004;
+	];
+	doap:file-release <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.005.tar.gz>;
+	doap:revision     "0.005"^^xsd:string.
+
+dist:v_0-006
+	a                 doap:Version;
+	dc:issued         "2013-04-21"^^xsd:date;
+	dcs:changeset     [
+		dcs:item [
+			a dcs:Packaging;
+			rdfs:label "Stop bundling old version of Scalar::Util."@en;
+		];
+		dcs:versus dist:v_0-005;
+	];
+	doap:file-release <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.006.tar.gz>;
+	doap:revision     "0.006"^^xsd:string.
+
+<http://tobyinkster.co.uk/#i>
+	a                 foaf:Person;
+	foaf:name         "Toby Inkster";
+	foaf:homepage     <http://tobyinkster.co.uk/>;
+	foaf:mbox         <mailto:tobyink@cpan.org>;
+	foaf:page         <https://metacpan.org/author/TOBYINK>;
+	owl:sameAs        cpan:tobyink.
+
+_:B1
+	nfo:fileName      "lib/DateTimeX/Auto.pm".
+
