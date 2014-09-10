@@ -27,7 +27,7 @@
 
 	BEGIN {
 		$DateTimeX::Auto::AUTHORITY = 'cpan:TOBYINK';
-		$DateTimeX::Auto::VERSION   = '0.006';
+		$DateTimeX::Auto::VERSION   = '0.007';
 	}
 
 	sub import
@@ -193,7 +193,7 @@
 
 	BEGIN {
 		$DateTimeX::Auto::Duration::AUTHORITY = 'cpan:TOBYINK';
-		$DateTimeX::Auto::Duration::VERSION   = '0.006';
+		$DateTimeX::Auto::Duration::VERSION   = '0.007';
 	}
 
 	sub new
