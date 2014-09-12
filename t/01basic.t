@@ -9,6 +9,8 @@ is(ref('2000-01-01T12:00:00'), 'DateTime', 'yyyy-mm-ddThh:mm:ss');
 	no DateTimeX::Auto;
 	DateTimeX::Auto->import('d');
 	
+	local @_ = ();
+	
 	is(ref(&d), 'DateTime', '&d works with no argument.');
 	
 	is(d('2000-01-01T12:00:00.1234567891') , '2000-01-01T12:00:00.1234567890',

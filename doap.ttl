@@ -10,14 +10,12 @@
 <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/project>
 	a                    doap:Project;
 	dc:contributor       <http://purl.org/NET/cpan-uri/person/tobyink>;
-	doap-deps:runtime-requirement [ doap-deps:on "Carp 0"^^doap-deps:CpanId ], [ doap-deps:on "DateTime 0"^^doap-deps:CpanId ], [
-		doap-deps:on "DateTime::Format::Strptime 0"^^doap-deps:CpanId;
-	], [ doap-deps:on "UNIVERSAL::ref 0"^^doap-deps:CpanId ], [
-		doap-deps:on "Object::AUTHORITY 0"^^doap-deps:CpanId;
-	];
+	doap-deps:runtime-requirement [ doap-deps:on "Exporter::Shiny"^^doap-deps:CpanId ], [ doap-deps:on "DateTime"^^doap-deps:CpanId ], [
+		doap-deps:on "DateTime::Format::Strptime"^^doap-deps:CpanId;
+	], [ doap-deps:on "UNIVERSAL::ref"^^doap-deps:CpanId ], [ doap-deps:on "DateTime::Duration"^^doap-deps:CpanId ];
 	doap-deps:test-requirement [ doap-deps:on "Test::More 0.61"^^doap-deps:CpanId ];
 	doap:bug-database    <http://rt.cpan.org/Dist/Display.html?Queue=DateTimeX-Auto>;
-	doap:category        [ rdfs:label "Perl" ], [ rdfs:label "Date" ], [ rdfs:label "Time" ], [ rdfs:label "DateTime" ], [ rdfs:label "DateTimeX" ], [ rdfs:label "overload" ], [ rdfs:label "constant" ];
+	doap:category        [ rdfs:label "overload" ], [ rdfs:label "constant" ], [ rdfs:label "Perl" ], [ rdfs:label "Date" ], [ rdfs:label "Time" ], [ rdfs:label "DateTime" ], [ rdfs:label "DateTimeX" ];
 	doap:created         "2011-07-06"^^xsd:date;
 	doap:developer       <http://tobyinkster.co.uk/#i>;
 	doap:documenter      <http://tobyinkster.co.uk/#i>;
@@ -27,7 +25,7 @@
 	doap:maintainer      <http://tobyinkster.co.uk/#i>;
 	doap:name            "DateTimeX-Auto";
 	doap:programming-language "Perl";
-	doap:release         <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-001>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-002>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-003>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-004>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-005>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-006>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-007>;
+	doap:release         <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-001>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-002>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-003>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-004>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-005>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-006>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-007>, <http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-008>;
 	doap:repository      [
 		a doap:GitRepository;
 		doap:browse <https://github.com/tobyink/p5-datetimex-auto>;
@@ -134,6 +132,26 @@
 	doap-changeset:released-by <http://purl.org/NET/cpan-uri/person/tobyink>;
 	doap:file-release    <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.007.tar.gz>;
 	doap:revision        "0.007"^^xsd:string.
+
+<http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/v_0-008>
+	a                    doap:Version;
+	dc:identifier        "DateTimeX-Auto-0.008"^^xsd:string;
+	dc:issued            "2014-09-12"^^xsd:date;
+	doap-changeset:changeset [
+		doap-changeset:item [
+			a doap-changeset:Change;
+			rdfs:label "Split OO stuff and exporter stuff into different packages.";
+		], [
+			a doap-changeset:Change;
+			rdfs:label "Remove Role::Commons dependency.";
+		], [
+			a doap-changeset:Change;
+			rdfs:label "Use Exporter::Shiny instead of Exporter.pm.";
+		];
+	];
+	doap-changeset:released-by <http://purl.org/NET/cpan-uri/person/tobyink>;
+	doap:file-release    <http://backpan.cpan.org/authors/id/T/TO/TOBYINK/DateTimeX-Auto-0.008.tar.gz>;
+	doap:revision        "0.008"^^xsd:string.
 
 <http://tobyinkster.co.uk/#i>
 	a                    foaf:Person;

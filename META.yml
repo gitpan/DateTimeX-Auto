@@ -8,7 +8,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: '6.17'
 dynamic_config: 0
-generated_by: 'Moose::Meta::Class::__ANON__::SERIAL::10 version , CPAN::Meta::Converter version 2.140640'
+generated_by: 'Dist::Inkt::Profile::TOBYINK version 0.016, CPAN::Meta::Converter version 2.140640'
 keywords:
   - Date
   - DateTime
@@ -33,15 +33,18 @@ optional_features: {}
 provides:
   DateTimeX::Auto:
     file: lib/DateTimeX/Auto.pm
-    version: '0.007'
+    version: '0.008'
+  DateTimeX::Auto::DateTime:
+    file: lib/DateTimeX/Auto.pm
+    version: '0.008'
   DateTimeX::Auto::Duration:
     file: lib/DateTimeX/Auto.pm
-    version: '0.007'
+    version: '0.008'
 requires:
-  Carp: '0'
   DateTime: '0'
+  DateTime::Duration: '0'
   DateTime::Format::Strptime: '0'
-  Object::AUTHORITY: '0'
+  Exporter::Shiny: '0'
   UNIVERSAL::ref: '0'
 resources:
   X_identifier: http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/project
@@ -49,4 +52,4 @@ resources:
   homepage: https://metacpan.org/release/DateTimeX-Auto
   license: http://dev.perl.org/licenses/
   repository: git://github.com/tobyink/p5-datetimex-auto.git
-version: '0.007'
+version: '0.008'

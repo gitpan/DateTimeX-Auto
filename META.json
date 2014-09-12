@@ -5,7 +5,7 @@
       "TOBYINK <tobyink@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Moose::Meta::Class::__ANON__::SERIAL::10 version , CPAN::Meta::Converter version 2.140640",
+   "generated_by" : "Dist::Inkt::Profile::TOBYINK version 0.016, CPAN::Meta::Converter version 2.140640",
    "keywords" : [
       "Date",
       "DateTime",
@@ -41,10 +41,10 @@
       },
       "runtime" : {
          "requires" : {
-            "Carp" : "0",
             "DateTime" : "0",
+            "DateTime::Duration" : "0",
             "DateTime::Format::Strptime" : "0",
-            "Object::AUTHORITY" : "0",
+            "Exporter::Shiny" : "0",
             "UNIVERSAL::ref" : "0"
          }
       },
@@ -57,11 +57,15 @@
    "provides" : {
       "DateTimeX::Auto" : {
          "file" : "lib/DateTimeX/Auto.pm",
-         "version" : "0.007"
+         "version" : "0.008"
+      },
+      "DateTimeX::Auto::DateTime" : {
+         "file" : "lib/DateTimeX/Auto.pm",
+         "version" : "0.008"
       },
       "DateTimeX::Auto::Duration" : {
          "file" : "lib/DateTimeX/Auto.pm",
-         "version" : "0.007"
+         "version" : "0.008"
       }
    },
    "release_status" : "stable",
@@ -80,5 +84,5 @@
          "web" : "https://github.com/tobyink/p5-datetimex-auto"
       }
    },
-   "version" : "0.007"
+   "version" : "0.008"
 }

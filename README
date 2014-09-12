@@ -2,7 +2,7 @@ NAME
     DateTimeX::Auto - use DateTime without needing to call constructors
 
 SYNOPSIS
-     use DateTimeX::Auto ':auto';
+     use DateTimeX::Auto -auto;
  
      my $ga_start = '2000-04-06' + 'P10Y';
      printf("%s %s\n", $ga_start, ref $ga_start);  # 2010-04-06 DateTime
@@ -10,7 +10,7 @@ SYNOPSIS
      {
        no DateTimeX::Auto;
        my $string = '2000-04-06';
-       printf( "%s\n", ref($string)?'Ref':'NoRef' );  # NoRef
+       printf( "%s\n", ref($string) ? 'Ref' : 'NoRef' );  # NoRef
      }
 
 DESCRIPTION
@@ -42,9 +42,9 @@ DESCRIPTION
      my $dt         ='1234-12-12T12:34:56.123456789123456789';
      print "$dt\n"; # 1234-12-12T12:34:56.123456789000000000
 
-    Objects are blessed into the `DateTimeX::Auto` class which inherits from
-    `DateTime`. They use UNIVERSAL::ref to masquerade as plain `DateTime`
-    objects.
+    Objects are blessed into the `DateTimeX::Auto::DateTime` class which
+    inherits from `DateTime`. They use UNIVERSAL::ref to masquerade as plain
+    `DateTime` objects.
 
      print ref('2000-01-01')."\n";   # DateTime
 
@@ -81,19 +81,19 @@ DESCRIPTION
 
      use DateTimeX::Auto;
  
-     my $dt1 = DateTimeX::Auto->new('2000-01-01T12:00:00.1234');
+     my $dt1 = DateTimeX::Auto::DateTime->new('2000-01-01T12:00:00.1234');
  
      # Traditional DateTime style
-     my $dt2 = DateTimeX::Auto->new(
+     my $dt2 = DateTimeX::Auto::DateTime->new(
        year  => 2000,
        month => 2,
        day   => 3,
-       );
+     );
 
     Called in the traditional DateTime style, throws an exception if the date
-    isn't valid. Called in the DateTimeX::Auto stringy style, returns undef if
-    the date isn't in a recognised format, but throws if it's otherwise
-    invalid (e.g. 30th of February).
+    isn't valid. Called in the DateTimeX::Auto::DateTime stringy style,
+    returns undef if the date isn't in a recognised format, but throws if it's
+    otherwise invalid (e.g. 30th of February).
 
     There is similarly a DateTimeX::Auto::Duration class which is a similar
     thin wrapper around DateTime::Duration.
@@ -124,7 +124,7 @@ AUTHOR
     Toby Inkster <tobyink@cpan.org>.
 
 COPYRIGHT
-    Copyright 2011-2012 Toby Inkster
+    Copyright 2011-2012, 2014 Toby Inkster
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.

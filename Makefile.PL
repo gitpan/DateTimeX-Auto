@@ -10,7 +10,7 @@ my $meta = {
                         "TOBYINK <tobyink\@cpan.org>",
                       ],
   "dynamic_config" => 0,
-  "generated_by"   => "Moose::Meta::Class::__ANON__::SERIAL::10 version , CPAN::Meta::Converter version 2.140640",
+  "generated_by"   => "Dist::Inkt::Profile::TOBYINK version 0.016, CPAN::Meta::Converter version 2.140640",
   "keywords"       => [
                         "Date",
                         "DateTime",
@@ -31,18 +31,19 @@ my $meta = {
                         configure => { requires => { "ExtUtils::MakeMaker" => 6.17 } },
                         runtime => {
                           requires => {
-                            "Carp" => 0,
-                            "DateTime" => 0,
+                            "DateTime"                   => 0,
+                            "DateTime::Duration"         => 0,
                             "DateTime::Format::Strptime" => 0,
-                            "Object::AUTHORITY" => 0,
-                            "UNIVERSAL::ref" => 0,
+                            "Exporter::Shiny"            => 0,
+                            "UNIVERSAL::ref"             => 0,
                           },
                         },
                         test => { requires => { "Test::More" => 0.61 } },
                       },
   "provides"       => {
-                        "DateTimeX::Auto" => { file => "lib/DateTimeX/Auto.pm", version => 0.007 },
-                        "DateTimeX::Auto::Duration" => { file => "lib/DateTimeX/Auto.pm", version => 0.007 },
+                        "DateTimeX::Auto"           => { file => "lib/DateTimeX/Auto.pm", version => 0.008 },
+                        "DateTimeX::Auto::DateTime" => { file => "lib/DateTimeX/Auto.pm", version => 0.008 },
+                        "DateTimeX::Auto::Duration" => { file => "lib/DateTimeX/Auto.pm", version => 0.008 },
                       },
   "release_status" => "stable",
   "resources"      => {
@@ -58,7 +59,7 @@ my $meta = {
                                         },
                         X_identifier => "http://purl.org/NET/cpan-uri/dist/DateTimeX-Auto/project",
                       },
-  "version"        => 0.007,
+  "version"        => 0.008,
 };
 
 my %dynamic_config;
